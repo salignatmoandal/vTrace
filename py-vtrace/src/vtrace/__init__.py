@@ -10,8 +10,17 @@ clashing with the `vtrace.validate` Python module (schema validation).
 """
 
 from vtrace._vtrace import ManualClock, MonotonicClock
+from vtrace.adapters import trace_llm, trace_playback, trace_stt, trace_tts
 from vtrace.collector import Collector
 
 __version__ = "0.0.0"
 
-__all__ = ["Collector", "ManualClock", "MonotonicClock"]
+__all__ = [
+    "Collector",
+    "ManualClock",
+    "MonotonicClock",
+    "trace_llm",
+    "trace_playback",
+    "trace_stt",
+    "trace_tts",
+]
