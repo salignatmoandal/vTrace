@@ -1,7 +1,7 @@
-# vTrace — Python package (adapters, CLI, validator).
+# vTrace — Python package (adapters, CLI, validator, native bindings).
 #
-# SCAFFOLD ONLY. The validator is real so `just validate` works against
-# the schema from P0; the rest (adapters, CLI) is filled in at P1.
+# The native extension (_vtrace) is built by maturin from the Rust
+# crate at crates/vtrace-python. The Python source lives in src/vtrace/.
 
 [project]
 name = "vtrace"
@@ -20,10 +20,13 @@ dev = [
     "ruff>=0.6",
     "pyright>=1.1",
     "pytest>=8",
+    "maturin>=1.5,<2.0",
 ]
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/vtrace"]
+[tool.maturin]
+manifest-path = "../crates/vtrace-python/Cargo.toml"
+python-source = "src"
+module-name = "vtrace._vtrace"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
@@ -39,10 +42,8 @@ ignore = []
 
 [tool.pyright]
 include = ["src/vtrace", "tests"]
-# Basic mode for the P0 harness. Strict mode returns when the typed
-# collector (P1) lands; it is too noisy for dynamic JSON validation code.
 strict = []
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["maturin>=1.5,<2.0"]
+build-backend = "maturin"

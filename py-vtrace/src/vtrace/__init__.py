@@ -1,7 +1,16 @@
 """vTrace — Python adapter and CLI layer.
 
-SCAFFOLD ONLY. Adapters and the real CLI arrive at P1. The validator is
-real so `just validate` works against the schema from P0.
+The native extension `_vtrace` (built from the Rust crate
+`vtrace-python`) provides the typed contract: `MonotonicClock`,
+`ManualClock`, and `validate`. The Python layer adds adapters and the
+CLI on top.
+
+Note: `validate` is accessed via `vtrace._vtrace.validate` to avoid
+clashing with the `vtrace.validate` Python module (schema validation).
 """
 
+from vtrace._vtrace import ManualClock, MonotonicClock
+
 __version__ = "0.0.0"
+
+__all__ = ["ManualClock", "MonotonicClock"]

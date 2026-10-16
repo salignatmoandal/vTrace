@@ -6,9 +6,8 @@ license.workspace = true
 
 [dependencies]
 vtrace-core.workspace = true
-# PyO3 is added at P1 implementation. Kept out of the skeleton so the
-# workspace builds without the Python toolchain during P0.
-# pyo3 = { version = "0.22", features = ["extension-module"] }
+serde_json.workspace = true
+pyo3 = { version = "0.22", features = ["extension-module"] }
 
 [lints]
 workspace = true

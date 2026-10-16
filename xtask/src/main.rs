@@ -134,7 +134,10 @@ fn ci() -> Result<(), String> {
                 ])
             }),
         ),
-        ("test", Box::new(|| cargo(&["test", "--workspace"]))),
+        (
+            "test",
+            Box::new(|| cargo(&["test", "--workspace", "--exclude", "vtrace-python"])),
+        ),
         ("layers", Box::new(layers)),
         ("validate", Box::new(validate)),
     ];
