@@ -264,6 +264,7 @@ version = "0.0.0"
 dependencies = [
  "serde",
  "serde_json",
+ "thiserror",
  "vtrace-core",
 ]
 
@@ -281,7 +282,9 @@ name = "vtrace-python"
 version = "0.0.0"
 dependencies = [
  "pyo3",
+ "serde",
  "serde_json",
+ "vtrace-analysis",
  "vtrace-core",
 ]
 
