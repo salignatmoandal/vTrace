@@ -1,82 +1,89 @@
 # P4 — Causal Analysis
 
 - **Status (implementation):** Complete
-- **Depends on:** P2, P3
-- **Specs:** 0007 (primaire), 0003, 0005, 0006
-- **Decisions:** 0005 (centrale)
+- **Depends on:** P1–P3
+- **Specs:** 0007 (critical path), 0003 (parent_id, pairs)
+- **Decisions:** 0005 (no invented causality), 0006
 
-## 1. Problème scientifique
+## 1. Scientific problem
 
-Une timeline ordonnée n’est pas un **graphe de dépendances**. Sommer
-les durées de stages sous-estime (ou surestime) la latence lorsque les
-stages se chevauchent. Inversement, inférer une arête parce que deux
-événements sont proches dans le temps produit un chemin critique
-*plausible mais faux* — particulièrement dangereux en concurrence
-([Crafa & Russo, 2013, arXiv:1303.1384](https://arxiv.org/abs/1303.1384)).
+Optimizing a voice pipeline requires knowing **which chain of stages**
+dominates wall-clock time for a given turn. Component-level scheduling
+literature shows that end-to-end latency is often the composition of
+heterogeneous components, with bottlenecks concentrated on *stragglers*
+([Han et al., 2015, arXiv:1511.02960](https://arxiv.org/abs/1511.02960)).
 
-Les objectifs de latence d’un tour vocal sont **multiples** et non
-interchangeables :
+The scientific risk is **false causality**: inferring “A caused B”
+because timestamps are close. In concurrent systems, that inference is
+logically invalid ([Crafa & Russo, 2013,
+arXiv:1303.1384](https://arxiv.org/abs/1303.1384)).
 
-| Objectif | Événement terminal typique |
+## 2. Operational definition
+
+**P4** builds a **causal DAG** whose vertices are events and whose
+edges are *only*:
+
+1. **Parent entry** — `parent_id` on a `*.started` or `*.queued`
+   (entry into a child span);
+2. **Same-span lifecycle** — `started` → intermediate → terminal;
+3. **Queue pair** — `*.queued` → `*.started` (same family);
+4. **Cancel pair** — `*.cancel_requested` → `*.cancelled`.
+
+From that DAG, P4 extracts **distinct root→leaf paths**, each with a
+duration and a confidence:
+
+| `PathConfidence` | Meaning |
 |---|---|
-| TTFT | `llm.first_token` |
-| TTFA | `tts.first_audio` |
-| Time-to-audible | `playback.started` (après `vad.speech_ended`) |
-| Fin de tour | `turn.completed` (ou autre terminal) |
+| `complete` | Continuous chain of explicit edges |
+| `partial` | Path truncated; missing edges |
+| `unavailable` | Missing endpoint or disconnected component |
 
-Les systèmes multi-composants rappellent que la latence globale est
-souvent celle du chemin le plus long dans un graphe de dépendances,
-pas la somme des moyennes ([Han et al., 2015,
-arXiv:1511.02960](https://arxiv.org/abs/1511.02960)).
+**P4 is not:** inferring STT→LLM because STT ended “just before” LLM
+started; ranking paths by statistical significance (out of scope).
 
-## 2. Définition opérationnelle
+## 3. Foundations
 
-**P4** construit un **DAG** à partir d’arêtes *explicites uniquement* :
+### Causality vs concurrency
 
-- `parent_span_id` (entrée de span enfant) ;
-- chaîne de lifecycle *same-span* ;
-- `*.queued` → `*.started` ;
-- `cancel.requested` → `*.cancelled`.
+Crafa & Russo formalize that *ex post* execution-trace analysis must
+separate *causal* order from *concurrent* order. Decision 0005 is the
+vTrace operationalization of that principle: *prefer an incomplete
+result over a false one*.
 
-Puis calcule, **par objectif**, un chemin critique avec confiance
-`complete | partial | unavailable`. L’absence d’évidence produit
-`partial` / `unavailable` **avec raison**, jamais un chemin fabriqué
-(décision 0005).
+### Critical path and latency composition
 
-**P4 n’est pas :** un export OTel, ni un benchmark (P5).
+Predictive Component-level Scheduling (PCS) frames latency as a
+composition of components ([Han et al., 2015](https://arxiv.org/abs/1511.02960)).
+P4 exposes *observed* compositions; it does not schedule them.
 
-## 3. Fondements
+### Parent semantics
 
-### Graphe vs timeline
+Only `started` / `queued` carry an entry edge from the parent. A
+terminal (`llm.completed`) with `parent_id=turn` does **not** create
+`turn.started → llm.completed` — that would invent a leap over the
+child’s lifecycle.
 
-La spec 0007 formalise la séparation : la timeline répond à « dans
-quel ordre ? » ; le DAG répond à « qu’est-ce qui *doit* précéder
-quoi ? ». Les deux coexistent dans le rapport CLI.
+## 4. vTrace contracts
 
-### Conservatisme épistémique
-
-Préférer un résultat incomplet à une fausse certitude est un choix
-méthodologique aligné sur la validation causale : on ne masque pas le
-manque d’évidence derrière un score de confiance opaque (alternative
-rejetée en spec 0007).
-
-## 4. Contrats vTrace
-
-| Élément | Rôle en P4 |
+| Element | Role in P4 |
 |---|---|
-| Spec 0007 | `build_graph`, `critical_path(objective)` |
-| Décision 0005 | Interdit l’inférence par proximité |
-| Crate `vtrace-analysis` (L1) | Implémentation typée ; exposée via PyO3 |
+| Spec 0007 | Critical path API; confidence labels |
+| Decision 0005 | Explicit edges only |
+| `vtrace-analysis` (L1) | Rust DAG + path extraction |
+| PyO3 `critical_paths` | Bridge to Python / CLI |
 
-## 5. Méthode et livrable
+## 5. Method and deliverable
 
-- Rust : `vtrace-analysis::{build_graph, critical_paths}`.
-- Python : `vtrace.causal` + section « Critical paths » du rapport.
-- Sur la fixture sans `*.queued` : chemins **partial** avec
-  `missing queue edge` — résultat *attendu*, non un échec.
-- **Livrable :** rapport de chemin critique sur une trace reconstruite.
+- Rust: `graph.rs`, `path.rs`; deny `unwrap` in production.
+- Python: `causal.py` + *Critical path* report section.
+- Acceptance tests: complete path; missing edge → `partial` /
+  `unavailable`; no proximity edge.
+- **Deliverable:** list of paths with duration and confidence; honest
+  on fixtures without queue hooks.
 
-## 6. Statut et limites
+## 6. Status and limits
 
-Implémenté. Limite : sans hooks de file (P6), les chemins restent
-souvent `partial` — c’est la preuve que le système refuse de mentir.
+Implemented. On a pipeline instrumented only with `started` /
+`first_*` / `completed`, paths are often **partial** — that is
+expected, not a bug. Full `complete` paths require `parent_id` and
+queue hooks (P6).

@@ -2,90 +2,86 @@
 
 - **Status (implementation):** Complete (MVP)
 - **Depends on:** P0 (contracts Accepted)
-- **Specs:** 0001, 0003, 0004, 0005 (bornes), 0006 (terminaux), 0009
+- **Specs:** 0001, 0003, 0004, 0005 (bounds), 0006 (terminals), 0009
 - **Decisions:** 0001, 0003, 0004, 0006
 
-## 1. Problème scientifique
+## 1. Scientific problem
 
-Un pipeline voix temps réel (STT → LLM → TTS → playback) produit une
-latence *perçue* qui n’est pas réductible à un unique scalaire. La
-littérature récente sur les architectures *voice-to-voice* montre que
-les leviers de latence sont **composants-spécifiques** : ASR, gestion
-de dialogue et TTS contribuent inégalement au *Real-Time Factor*
-(RTF), le TTS étant souvent dominant
+A real-time voice pipeline (STT → LLM → TTS → playback) produces a
+*perceived* latency that cannot be reduced to a single scalar. Recent
+work on *voice-to-voice* architectures shows that latency levers are
+**component-specific**: ASR, dialogue management, and TTS contribute
+unequally to the Real-Time Factor (RTF), with TTS often dominant
 ([Purwar & Choudhary, 2025, arXiv:2509.20971](https://arxiv.org/abs/2509.20971)).
 
-Sans reconstruction fidèle d’une **timeline d’événements**, toute
-optimisation reste une anecdote : on ne sait pas *où* le temps a été
-dépensé, ni si les frontières de mesure sont comparables d’un run à
-l’autre.
+Without faithful reconstruction of an **event timeline**, optimization
+remains anecdotal: one cannot tell *where* time was spent, nor whether
+measurement boundaries are comparable across runs.
 
-## 2. Définition opérationnelle
+## 2. Operational definition
 
-**P1** est la phase qui établit qu’on peut :
+**P1** establishes that one can:
 
-1. **Observer** un tour de parole comme une séquence ordonnée
-   d’événements horodatés dans un domaine d’horloge explicite ;
-2. **Exporter** cette observation comme un document JSON validable
-   (le *contrat*) ;
-3. **Rapporter** compute, handoff et overlap à partir de *paires
-   d’événements explicites*, jamais de métriques inventées.
+1. **Observe** a speech turn as an ordered sequence of timestamped
+   events within an explicit clock domain;
+2. **Export** that observation as a validatable JSON document (the
+   *contract*);
+3. **Report** compute, handoff, and overlap from *explicit event
+   pairs*, never invented metrics.
 
-**P1 n’est pas :** un graphe causal (P4), un benchmark d’overhead
-(P5), ni une intégration à un pipeline HF réel (P6).
+**P1 is not:** a causal graph (P4), an overhead benchmark (P5), or
+integration with a real HF pipeline (P6).
 
-## 3. Fondements
+## 3. Foundations
 
-### Observabilité par traces
+### Observability via traces
 
-Le paradigme industriel du *distributed tracing* (ex. Dapper) sépare
-l’*instrumentation* de l’*analyse* : la vérité est une collection
-d’événements / spans exportés, pas l’état interne du collecteur.
-vTrace adopte la même séparation : le document de trace est le contrat
-(décision 0006).
+The industrial *distributed tracing* paradigm (e.g. Dapper) separates
+*instrumentation* from *analysis*: truth is a collection of exported
+events / spans, not the collector’s internal state. vTrace adopts the
+same separation: the trace document is the contract (decision 0006).
 
-### Frontières de mesure audio
+### Audio measurement boundaries
 
-La spec 0002 exige de distinguer *premier audio synthétisé*
-(`tts.first_audio`), *soumission au device*, et *début audible*
-(`playback.started`). Conflater ces instants fausse la notion de
-*time-to-audible* — erreur classique dans les systèmes streaming
-basse latence ([Quamer & Gutierrez-Osuna, 2024,
+Spec 0002 requires distinguishing *first synthesized audio*
+(`tts.first_audio`), *device submission*, and *audible start*
+(`playback.started`). Conflating these instants corrupts
+*time-to-audible* — a classic error in low-latency streaming systems
+([Quamer & Gutierrez-Osuna, 2024,
 arXiv:2406.09277](https://arxiv.org/abs/2406.09277)).
 
 ### Pipeline vs E2E
 
-Les architectures en cascade (ASR puis NLU/LLM puis TTS) subissent un
-effet de *cascade d’erreurs* et de latences additives ; les approches
-E2E modifient ce profil ([Desot et al., 2022,
-arXiv:2207.08179](https://arxiv.org/abs/2207.08179)). P1 fournit le
-langage commun pour *comparer* ces profils sans présupposer
-l’architecture.
+Cascaded architectures (ASR then NLU/LLM then TTS) suffer cascade
+error and additive latency; E2E approaches change that profile
+([Desot et al., 2022, arXiv:2207.08179](https://arxiv.org/abs/2207.08179)).
+P1 provides a shared language to *compare* those profiles without
+presupposing the architecture.
 
-## 4. Contrats vTrace
+## 4. vTrace contracts
 
-| Élément | Rôle en P1 |
+| Element | Role in P1 |
 |---|---|
-| Schéma d’événements (0003) | Identité, `sequence`, familles STT/LLM/TTS |
-| Horloge (0004) | `now_ns` + `clock_domain` ; horloge manuelle pour tests |
-| Collecteur borné (0005) | `record()` non bloquant ; perte visible |
-| Document JSON (0006) | Contrat consommable par CLI / tests |
-| Runtime Rust + façade Python (déc. 0001) | Cœur typé ; adaptateurs utilisateur en Python |
+| Event schema (0003) | Identity, `sequence`, STT/LLM/TTS families |
+| Clock (0004) | `now_ns` + `clock_domain`; manual clock for tests |
+| Bounded collector (0005) | Non-blocking `record()`; visible loss |
+| JSON document (0006) | Contract consumable by CLI / tests |
+| Rust runtime + Python facade (dec. 0001) | Typed core; user-facing adapters in Python |
 
-## 5. Méthode et livrable
+## 5. Method and deliverable
 
-- **Fixture déterministe** (`fixtures/traces/one-turn.json`) + horloge
-  manuelle.
-- **CLI** `vtrace report` : compute / queue (handoff) / overlap.
-- **Critère d’acceptance :** une fixture rejouable produit une trace
-  déterministe ; la perte d’un événement critique est visible
+- **Deterministic fixture** (`fixtures/traces/one-turn.json`) + manual
+  clock.
+- **CLI** `vtrace report`: compute / queue (handoff) / overlap.
+- **Acceptance criterion:** a replayable fixture yields a
+  deterministic trace; loss of a critical event is visible
   (`completeness`, `dropped_critical`).
 
-**Livrable démontrable :** `vtrace report` sur une fixture — plus petite
-version publiable (spec 0009).
+**Demonstrable deliverable:** `vtrace report` on a fixture — the
+smallest publishable version (spec 0009).
 
-## 6. Statut et limites
+## 6. Status and limits
 
-Implémenté : `vtrace-core`, bindings PyO3, collecteur, adaptateurs,
-mock pipeline, CLI report. Limite assumée : single-producer à
-l’origine de P1 ; multi-producteur formalisé en P2.
+Implemented: `vtrace-core`, PyO3 bindings, collector, adapters, mock
+pipeline, CLI report. Assumed limit: single-producer at the origin of
+P1; multi-producer formalized in P2.

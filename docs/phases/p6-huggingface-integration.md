@@ -1,82 +1,87 @@
 # P6 — Hugging Face Integration
 
-- **Status (implementation):** Not started (code audit of
-  `huggingface/speech-to-speech` completed in engineering notes)
-- **Depends on:** P1, P2 ; idéalement P4
-- **Specs:** 0009, 0001, 0005, 0006
-- **Decisions:** 0001 (Python comme surface HF), 0004 (privacy), 0006
+- **Status (implementation):** Upcoming (s2s audit done; hooks not
+  landed)
+- **Depends on:** P1–P4 (instrumentation + analysis); P5 recommended
+  before production claims
+- **Specs:** 0002 (voice boundaries), 0009 (demo), roadmap P6
+- **Decisions:** 0004 (privacy), 0006 (document as contract)
 
-## 1. Problème scientifique
+## 1. Scientific problem
 
-Les contrats et l’analyse (P1–P4) sont nécessaires mais insuffisants
-pour démontrer la *valeur* : il faut une trace d’un **vrai tour** dans
-un pipeline de référence. Le candidat naturel est
-[`huggingface/speech-to-speech`](https://github.com/huggingface/speech-to-speech)
-— cascade VAD → STT → LLM → TTS, threads + files, protocole Realtime,
-utilisé en production (ex. robots Reachy Mini).
+Open-source reference stacks for *speech-to-speech* (e.g. Hugging Face
+`speech-to-speech`) already implement STT / LLM / TTS, cancel scopes,
+and informal latency stores. What they typically lack is a **shared,
+validatable contract** of events and clocks that lets an external
+observer:
 
-La littérature sur les agents *spoken dialogue* temps réel fixe des
-cibles de latence sub-seconde et des architectures streaming
-([Chen et al., 2026, arXiv:2601.11141](https://arxiv.org/abs/2601.11141) ;
-[Purwar & Choudhary, 2025, arXiv:2509.20971](https://arxiv.org/abs/2509.20971)).
-Sans instrumentation sur un tel système, vTrace reste un validateur de
-fixtures.
+1. compare two runs without reading proprietary logs;
+2. distinguish synthesis, device submission, and audible start;
+3. export a document consumable by analysis tools (critical path,
+   lifecycle).
 
-## 2. Définition opérationnelle
+Real-time E2E dialogue systems publish sub-second targets and
+streaming semantics ([Chen et al., 2026,
+arXiv:2601.11141](https://arxiv.org/abs/2601.11141)). Integration must
+respect those budgets: hooks must remain off the critical synthesis
+path as much as possible (cf. P5).
 
-**P6** consiste à :
+## 2. Operational definition
 
-1. **Auditer** le code s2s (handlers, `CancelScope`, `TurnLatencyStore`)
-   *avant* toute claim ;
-2. Identifier des **points d’instrumentation stables** (idéal :
-   `BaseHandler._run_loop`, hooks optionnels `on_event`) ;
-3. Livrer une intégration **non invasive** (PR upstream minimal ou
-   adaptateur toggleable) ;
-4. Produire une **trace réelle** validée + `vtrace report`.
+**P6** connects vTrace to a **real** HF voice pipeline by:
 
-**P6 n’est pas :** un dashboard (P7), ni l’adoption d’OTel comme
-contrat interne (décision 0006 : OTel = export futur).
+1. placing **adapters** on documented lifecycle points (`BaseHandler`,
+   queue boundaries, TTS / playback callbacks, `CancelScope`);
+2. exporting a turn as a JSON document conforming to
+   `docs/schema/trace.schema.json`;
+3. demonstrating a **demo** (spec 0009): fixture or live turn →
+   `vtrace report` with compute / handoff / overlap / critical path /
+   anomalies.
 
-## 3. Fondements
+**P6 is not:** forking HF to change model quality; collecting
+transcripts or audio by default (decision 0004); claiming OTel
+compatibility as the primary contract (decision 0006 — OTel remains a
+*future export*).
 
-### Instrumentation non invasive
+## 3. Foundations
 
-Modifier un pipeline concurrent sans en changer la sémantique rejoint
-l’invariant 1 de vTrace : le profiler **observe**, il n’annule pas et
-n’impose pas de backpressure. Les hooks `None` par défaut garantissent
-un overhead nul lorsque désactivés — prérequis pour P5 *et* pour
-l’acceptation upstream.
+### Streaming spoken dialogue
 
-### Privacy by default
+Chroma 1.0 and related systems motivate *end-to-end* measurement of
+spoken dialogue ([Chen et al., 2026](https://arxiv.org/abs/2601.11141)).
+P6 is the empirical activation of P1–P4 metrics on such a stack.
 
-Aucun contenu vocal (audio, transcript, prompt, réponse modèle) n’est
-collecté par défaut (décision 0004) — contrainte renforcée dès qu’on
-touche un pipeline conversationnel réel.
+### Privacy
 
-### Concurrence réelle
+Decision 0004: no raw audio, transcription, prompt, or model response
+in `attributes` by default. HF integration must emit **structural**
+events (started / first_token / first_audio / cancelled), not content.
 
-s2s valide le besoin P2 (multi-producer) et P3 (cancel par génération).
-L’audit a montré : `perf_counter` local, `TurnLatencyStore` (durées),
-mais pas de document de trace ni de perte visible — exactement l’écart
-que vTrace comble.
+### Audit (prior work)
 
-## 4. Contrats vTrace
+The HF `speech-to-speech` audit identified: `BaseHandler`,
+`CancelScope`, `TurnLatencyStore`, and queue boundaries as natural
+hook points — aligned with P2–P3 event families.
 
-| Élément | Rôle en P6 |
+## 4. vTrace contracts
+
+| Element | Role in P6 |
 |---|---|
-| Spec 0009 | Livrable : trace d’un tour réel |
-| Spec 0005 / 0006 | Collecteur multi-thread + cancel lifecycle |
-| Décision 0001 | Python = surface d’intégration HF |
+| Spec 0002 | STT / LLM / TTS / playback boundaries |
+| Spec 0009 | Demo: one turn → report |
+| Adapters (`adapters.py`) | Thin wrappers already used on the mock pipeline |
+| Schema | Validation of every exported document |
 
-## 5. Méthode et livrable (cible)
+## 5. Method and deliverable (planned)
 
-1. Spike : monkey-patch / hooks sur un tour local `speech-to-speech local`.
-2. PR upstream optionnel : `on_event` sur `BaseHandler` (off by default).
-3. Export JSON → `vtrace validate` + `vtrace report` (+ chemins P4).
-4. **Livrable :** trace d’un tour réel via l’intégration.
+- Minimal patches / wrappers around HF handlers (no content capture).
+- Replayable demo script + optional live turn.
+- Gate: schema validation + `vtrace report` on the produced document.
+- **Deliverable:** a partner can run the demo and answer: *where is
+  time spent on this turn?*
 
-## 6. Statut et limites
+## 6. Status and limits
 
-Audit GitHub effectué ; code d’intégration non mergé. Risque principal :
-dépendance à des détails internes volatils — mitigation : instrumenter
-des points stables (`BaseHandler`), PR petit, feature-flag.
+Audit complete; instrumentation not landed. Until P6, demos use the
+**mock pipeline** (P1). Live adoption remains gated on hooks +, for
+any overhead claim, on P5.
