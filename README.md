@@ -17,11 +17,13 @@ specialized observation layer for real-time voice runtimes.
 | P3 | Lifecycle reliability | Done |
 | P4 | Causal analysis (critical paths) | Done |
 | P5 | Benchmarking and overhead | Upcoming |
-| P6 | Hugging Face speech-to-speech hooks | Upcoming |
+| P6 | Hugging Face speech-to-speech hooks | Adapters-first bridge + fixture; upstream pending |
 | P7 | Developer experience (dashboard / OTel) | Later |
 
 No overhead or latency claim is published before **P5**. Current demos
-use fixtures and a mock pipeline; live HF integration is **P6**.
+use fixtures, a mock pipeline, and a model-free s2s-shaped interrupt
+turn (`just report-s2s`). Live hooks inside Hugging Face
+`speech-to-speech` are still pending.
 
 ## What it measures
 
@@ -76,9 +78,15 @@ cd py-vtrace && uv sync && uv run maturin develop
 just report
 # or: cd py-vtrace && uv run vtrace report ../fixtures/traces/one-turn.json
 
+# P6: #714-shaped interrupt turn (s2s bridge, model-free)
+just report-s2s
+
 # Full gate (Rust + Python + schema)
 just ci
 ```
+
+See [`docs/integrations/speech-to-speech.md`](docs/integrations/speech-to-speech.md)
+for the HF hook map.
 
 ## Repository layout
 

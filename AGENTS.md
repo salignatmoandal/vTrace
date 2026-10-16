@@ -68,8 +68,9 @@ not from hand editing.
 
 ## Current phase
 
-P4 complete (causal analysis). Next: P5 benchmarking or P6 HF integration.
-P0 is **Accepted**; P1–P3 are done. See [`docs/roadmap.md`](docs/roadmap.md).
+P4 complete. P6 adapters-first slice landed (`vtrace.integrations.s2s`);
+live HF hooks and P5 benchmarks are still open. P0 is **Accepted**;
+P1–P3 are done. See [`docs/roadmap.md`](docs/roadmap.md).
 
 ## Available skills
 

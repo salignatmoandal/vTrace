@@ -39,3 +39,11 @@ validate:
 # Run the CLI report on the acceptance fixture (demonstrable deliverable).
 report:
     cd py-vtrace && uv run vtrace report ../fixtures/traces/one-turn.json
+
+# P6 demo: #714-shaped interrupt turn (s2s bridge, model-free).
+report-s2s:
+    cd py-vtrace && uv run vtrace report ../fixtures/traces/s2s-interrupt-turn.json
+
+# Validate the P6 s2s interrupt fixture against the schema.
+validate-s2s:
+    cd py-vtrace && uv run python -m vtrace.validate ../fixtures/traces/s2s-interrupt-turn.json

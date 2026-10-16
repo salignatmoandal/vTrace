@@ -1,6 +1,6 @@
 # vTrace — Roadmap
 
-- **Last reviewed:** 2026-10-16 · **Last updated:** 2026-10-16 · **Change:** Academic phase notes P1–P6 added under `docs/phases/` (arXiv-anchored). Next: P5 or P6 implementation.
+- **Last reviewed:** 2026-10-16 · **Last updated:** 2026-10-16 · **Change:** P6 adapters-first slice (`vtrace.integrations.s2s`, #714-shaped fixture, integration doc). Next: wire live s2s hooks or P5.
 
 Incremental phasing. Each phase has a goal, tasks, dependencies,
 acceptance criteria, risks, and a demonstrable deliverable. The

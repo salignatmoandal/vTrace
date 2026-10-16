@@ -98,4 +98,8 @@ done when its acceptance tests are green and evidence is attached
 ## 12. Open questions
 
 - Does P6 instrument `speech-to-speech` via adapters or via a small
-  upstream PR? Decidable after the P6 code audit.
+  upstream PR? **Resolved (adapters-first):** land
+  `vtrace.integrations.s2s` and a model-free #714-shaped fixture in
+  this repo first; an optional upstream PR remains a follow-up once
+  hooks are proven. See
+  [`docs/integrations/speech-to-speech.md`](../integrations/speech-to-speech.md).

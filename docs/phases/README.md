@@ -20,7 +20,7 @@ reader (researcher, reviewer, partner) who needs the *why* before the
 | P3 | [Lifecycle reliability](p3-lifecycle-reliability.md) | Done |
 | P4 | [Causal analysis](p4-causal-analysis.md) | Done |
 | P5 | [Benchmarking and overhead](p5-benchmarking-and-overhead.md) | Upcoming |
-| P6 | [Hugging Face integration](p6-huggingface-integration.md) | Upcoming (s2s audit done) |
+| P6 | [Hugging Face integration](p6-huggingface-integration.md) | Adapters-first bridge + fixture; upstream hooks pending |
 
 ## Common structure of each note
 

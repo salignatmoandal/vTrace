@@ -1,7 +1,7 @@
 # P6 — Hugging Face Integration
 
-- **Status (implementation):** Upcoming (s2s audit done; hooks not
-  landed)
+- **Status (implementation):** Adapters-first slice landed (bridge +
+  #714-shaped fixture). Live HF tree hooks not merged upstream yet.
 - **Depends on:** P1–P4 (instrumentation + analysis); P5 recommended
   before production claims
 - **Specs:** 0002 (voice boundaries), 0009 (demo), roadmap P6
@@ -82,6 +82,9 @@ hook points — aligned with P2–P3 event families.
 
 ## 6. Status and limits
 
-Audit complete; instrumentation not landed. Until P6, demos use the
-**mock pipeline** (P1). Live adoption remains gated on hooks +, for
-any overhead claim, on P5.
+- **Landed:** `S2STurnBridge`, `run_s2s_shaped_turn(interrupted=…)`,
+  fixture `fixtures/traces/s2s-interrupt-turn.json`,
+  `docs/integrations/speech-to-speech.md`, `just report-s2s`.
+- **Not landed:** patches inside `huggingface/speech-to-speech`.
+- Live adoption remains gated on wiring hooks; overhead claims remain
+  gated on P5.
