@@ -12,13 +12,17 @@ clashing with the `vtrace.validate` Python module (schema validation).
 from vtrace._vtrace import ManualClock, MonotonicClock
 from vtrace.adapters import trace_llm, trace_playback, trace_stt, trace_tts
 from vtrace.collector import Collector
+from vtrace.lifecycle import Anomaly, LifecycleReport, analyze_lifecycle
 
 __version__ = "0.0.0"
 
 __all__ = [
+    "Anomaly",
     "Collector",
+    "LifecycleReport",
     "ManualClock",
     "MonotonicClock",
+    "analyze_lifecycle",
     "trace_llm",
     "trace_playback",
     "trace_stt",

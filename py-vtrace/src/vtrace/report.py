@@ -20,6 +20,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from vtrace.lifecycle import analyze_lifecycle, format_lifecycle
+
 _MS = 1_000_000  # ns per ms
 
 
@@ -184,5 +186,22 @@ def generate_report(doc: dict[str, Any]) -> str:
         by_name, "tts.started", "tts.first_audio", "playback.started", "playback.started"
     )
     lines.append(f"  tts ∥ playback        {ov_tts_pb}")
+    lines.append("")
+
+    # Lifecycle (P3, spec 0006) — analysis only, never mutates the document.
+    lifecycle = analyze_lifecycle(doc)
+    lines.append(format_lifecycle(lifecycle))
+
+    # cancel_latency_ms: cancel.requested → cancel.acknowledged or *.cancelled
+    cancel_end = "cancel.acknowledged"
+    if "cancel.acknowledged" not in by_name:
+        # Prefer the earliest *.cancelled if present.
+        cancelled = [ev for ev in events if ev["name"].endswith(".cancelled")]
+        cancel_end = cancelled[0]["name"] if cancelled else "cancel.acknowledged"
+    lines.append("")
+    lines.append("Cancellation:")
+    lines.append(
+        f"  cancel_latency_ms     {_metric(by_name, 'cancel.requested', cancel_end, 'cancel')}"
+    )
 
     return "\n".join(lines)

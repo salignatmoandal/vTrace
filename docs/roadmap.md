@@ -1,6 +1,6 @@
 # vTrace — Roadmap
 
-- **Last reviewed:** 2026-10-16 · **Last updated:** 2026-10-16 · **Change:** P0 Accepted — specs and decisions moved to Accepted status. Starting P1 (minimal trace reconstruction).
+- **Last reviewed:** 2026-10-16 · **Last updated:** 2026-10-16 · **Change:** P3 lifecycle analysis landed (anomalies off hot path). Next: P4 causal analysis.
 
 Incremental phasing. Each phase has a goal, tasks, dependencies,
 acceptance criteria, risks, and a demonstrable deliverable. The

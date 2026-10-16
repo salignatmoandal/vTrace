@@ -68,8 +68,9 @@ not from hand editing.
 
 ## Current phase
 
-P1 — Minimal trace reconstruction. P0 (Architecture and contracts)
-is **Accepted**. See [`docs/roadmap.md`](docs/roadmap.md).
+P3 complete (lifecycle analysis). Next: P4 — Causal analysis.
+P0 is **Accepted**; P1 MVP and P2 multi-producer are done.
+See [`docs/roadmap.md`](docs/roadmap.md).
 
 ## Available skills
 
