@@ -43,6 +43,8 @@ pub struct Event {
     pub timestamp_ns: i64,
     pub clock_domain: String,
     pub sequence: i64,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub producer_id: Option<String>,
     #[serde(default, skip_serializing_if = "HashMap::is_empty")]
     pub attributes: HashMap<String, serde_json::Value>,
 }

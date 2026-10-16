@@ -110,6 +110,7 @@ mod tests {
                     timestamp_ns: 0,
                     clock_domain: "manual:test".into(),
                     sequence: 0,
+                    producer_id: None,
                     attributes: HashMap::new(),
                 },
                 Event {
@@ -125,6 +126,7 @@ mod tests {
                     timestamp_ns: 100,
                     clock_domain: "manual:test".into(),
                     sequence: 1,
+                    producer_id: None,
                     attributes: HashMap::new(),
                 },
             ],

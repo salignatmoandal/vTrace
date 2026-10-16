@@ -63,6 +63,7 @@
         "timestamp_ns": { "type": "integer", "description": "Nanoseconds within clock_domain." },
         "clock_domain": { "type": "string" },
         "sequence": { "type": "integer", "minimum": 0, "description": "Producer sequence number. Tie-breaker, not causality." },
+        "producer_id": { "type": "string", "description": "Producing thread/handler. Paired with sequence (optional, spec 0005)." },
         "attributes": {
           "type": "object",
           "additionalProperties": { "type": ["string", "integer", "boolean", "null"] }
