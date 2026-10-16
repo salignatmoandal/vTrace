@@ -1,0 +1,129 @@
+{
+  "schema_version": "1.0",
+  "clock_domains": ["manual:turn-42"],
+  "completeness": "complete",
+  "dropped_total": 0,
+  "dropped_critical": 0,
+  "session_metadata": {
+    "hardware": "apple-silicon",
+    "vtrace_version": "0.0.0"
+  },
+  "events": [
+    {
+      "schema_version": "1.0",
+      "event_id": "evt_001",
+      "session_id": "sess_1",
+      "turn_id": "turn_42",
+      "span_id": "span_turn",
+      "component": "turn",
+      "name": "turn.started",
+      "timestamp_ns": 0,
+      "clock_domain": "manual:turn-42",
+      "sequence": 0
+    },
+    {
+      "schema_version": "1.0",
+      "event_id": "evt_002",
+      "session_id": "sess_1",
+      "turn_id": "turn_42",
+      "span_id": "span_stt",
+      "parent_span_id": "span_turn",
+      "component": "stt",
+      "name": "stt.started",
+      "timestamp_ns": 1000000,
+      "clock_domain": "manual:turn-42",
+      "sequence": 1
+    },
+    {
+      "schema_version": "1.0",
+      "event_id": "evt_003",
+      "session_id": "sess_1",
+      "turn_id": "turn_42",
+      "span_id": "span_stt",
+      "parent_span_id": "span_turn",
+      "component": "stt",
+      "name": "stt.completed",
+      "timestamp_ns": 310000000,
+      "clock_domain": "manual:turn-42",
+      "sequence": 2,
+      "attributes": { "backend": "fixture" }
+    },
+    {
+      "schema_version": "1.0",
+      "event_id": "evt_004",
+      "session_id": "sess_1",
+      "turn_id": "turn_42",
+      "span_id": "span_llm",
+      "parent_span_id": "span_turn",
+      "component": "llm",
+      "name": "llm.started",
+      "timestamp_ns": 320000000,
+      "clock_domain": "manual:turn-42",
+      "sequence": 3
+    },
+    {
+      "schema_version": "1.0",
+      "event_id": "evt_005",
+      "session_id": "sess_1",
+      "turn_id": "turn_42",
+      "span_id": "span_llm",
+      "parent_span_id": "span_turn",
+      "component": "llm",
+      "name": "llm.first_token",
+      "timestamp_ns": 600000000,
+      "clock_domain": "manual:turn-42",
+      "sequence": 4
+    },
+    {
+      "schema_version": "1.0",
+      "event_id": "evt_006",
+      "session_id": "sess_1",
+      "turn_id": "turn_42",
+      "span_id": "span_tts",
+      "parent_span_id": "span_turn",
+      "component": "tts",
+      "name": "tts.started",
+      "timestamp_ns": 610000000,
+      "clock_domain": "manual:turn-42",
+      "sequence": 5
+    },
+    {
+      "schema_version": "1.0",
+      "event_id": "evt_007",
+      "session_id": "sess_1",
+      "turn_id": "turn_42",
+      "span_id": "span_tts",
+      "parent_span_id": "span_turn",
+      "component": "tts",
+      "name": "tts.first_audio",
+      "timestamp_ns": 800000000,
+      "clock_domain": "manual:turn-42",
+      "sequence": 6
+    },
+    {
+      "schema_version": "1.0",
+      "event_id": "evt_008",
+      "session_id": "sess_1",
+      "turn_id": "turn_42",
+      "span_id": "span_playback",
+      "parent_span_id": "span_turn",
+      "component": "playback",
+      "name": "playback.started",
+      "timestamp_ns": 920000000,
+      "clock_domain": "manual:turn-42",
+      "sequence": 7
+    },
+    {
+      "schema_version": "1.0",
+      "event_id": "evt_009",
+      "session_id": "sess_1",
+      "turn_id": "turn_42",
+      "span_id": "span_turn",
+      "component": "turn",
+      "name": "turn.completed",
+      "timestamp_ns": 2400000000,
+      "clock_domain": "manual:turn-42",
+      "sequence": 8
+    }
+  ]
+}

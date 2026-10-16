@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vtrace.dev/schema/trace.schema.json",
+  "title": "vTrace document",
+  "description": "Draft of the vTrace trace document contract (spec 0003). Not tied to a runtime. Timestamps are integer ns within an explicit clock_domain.",
+  "type": "object",
+  "required": ["schema_version", "clock_domains", "completeness", "dropped_total", "dropped_critical", "events"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Document contract version."
+    },
+    "clock_domains": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true,
+      "description": "Time domains present in the trace (spec 0004)."
+    },
+    "completeness": {
+      "type": "string",
+      "enum": ["complete", "partial"],
+      "description": "partial if a critical event was lost."
+    },
+    "dropped_total": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total number of events rejected by the collector."
+    },
+    "dropped_critical": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Critical events lost (never silent)."
+    },
+    "session_metadata": {
+      "type": "object",
+      "description": "Non-sensitive metadata (hardware, software, config). No voice content.",
+      "additionalProperties": { "type": ["string", "integer", "boolean", "null"] }
+    },
+    "events": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/event" }
+    }
+  },
+  "$defs": {
+    "event": {
+      "type": "object",
+      "required": ["schema_version", "event_id", "session_id", "turn_id", "span_id", "component", "name", "timestamp_ns", "clock_domain", "sequence"],
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": { "type": "string" },
+        "event_id": { "type": "string" },
+        "session_id": { "type": "string" },
+        "turn_id": { "type": "string" },
+        "response_id": { "type": "string", "description": "Distinct attempt within a turn (optional)." },
+        "span_id": { "type": "string" },
+        "parent_span_id": { "type": "string", "description": "Explicit parent: causal edge." },
+        "component": {
+          "type": "string",
+          "enum": ["vad", "stt", "llm", "tts", "playback", "turn", "collector"]
+        },
+        "name": { "type": "string" },
+        "timestamp_ns": { "type": "integer", "description": "Nanoseconds within clock_domain." },
+        "clock_domain": { "type": "string" },
+        "sequence": { "type": "integer", "minimum": 0, "description": "Producer sequence number. Tie-breaker, not causality." },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": { "type": ["string", "integer", "boolean", "null"] }
+        }
+      }
+    }
+  }
+}
