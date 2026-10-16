@@ -30,4 +30,4 @@ pub use clock::{Clock, ManualClock, MonotonicClock};
 pub use document::{Completeness, TraceDocument};
 pub use error::ValidationError;
 pub use event::{Component, Event};
-pub use validate::validate;
+pub use validate::{parse_and_validate, validate};

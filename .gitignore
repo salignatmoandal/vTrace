@@ -14,3 +14,7 @@ docs/generated/
 
 # OS noise.
 .DS_Store
+
+# Native extensions built by maturin.
+*.so
+*.pyd
