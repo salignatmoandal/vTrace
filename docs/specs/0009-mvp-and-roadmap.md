@@ -1,6 +1,6 @@
 # vTrace Specification 0009 — MVP and Roadmap
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-16
 - **Related decisions:** [0003 (MVP scope)](../decisions/0003-mvp-scope.md), [0001 (runtime strategy)](../decisions/0001-language-and-runtime-strategy.md)
 - **Supersedes (content):** `docs/roadmap.md` (folded here; the roadmap file is kept as the one-page summary)

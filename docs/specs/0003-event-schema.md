@@ -1,6 +1,6 @@
 # vTrace Specification 0003 — Event Schema
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-16
 - **Related decisions:** [0005 (no inferred causality)](../decisions/0005-no-inferred-causality.md), [0006 (trace document as contract)](../decisions/0006-trace-document-as-contract.md), [0004 (privacy default)](../decisions/0004-privacy-default.md)
 - **Supersedes (content):** former RFC-0002 (event model), folded here by migration

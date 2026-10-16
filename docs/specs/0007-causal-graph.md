@@ -1,6 +1,6 @@
 # vTrace Specification 0007 — Causal Graph and Critical Path
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-16
 - **Related decisions:** [0005 (no inferred causality)](../decisions/0005-no-inferred-causality.md)
 - **Depends on:** [0003 (event schema)](0003-event-schema.md), [0006 (lifecycle)](0006-lifecycle-and-cancellation.md)

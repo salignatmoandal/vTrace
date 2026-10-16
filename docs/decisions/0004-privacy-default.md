@@ -1,6 +1,6 @@
 # Decision 0004 — Voice content excluded by default
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-16
 - **Related specs:** [spec 0003](../specs/0003-event-schema.md)
 - **Replaces:** —

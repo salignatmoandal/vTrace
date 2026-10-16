@@ -1,6 +1,6 @@
 # Decision 0001 — Language and runtime strategy (Rust core at P1)
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-16
 - **Related specs:** [spec 0001](../specs/0001-system-overview.md), [spec 0005](../specs/0005-collector-and-concurrency.md)
 - **Replaces:** former ADR-0003 (Python-first runtime, Rust deferred) — superseded

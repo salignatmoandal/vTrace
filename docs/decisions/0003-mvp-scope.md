@@ -1,6 +1,6 @@
 # Decision 0003 — MVP scope
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-16
 - **Related specs:** [spec 0009](../specs/0009-mvp-and-roadmap.md), [spec 0001](../specs/0001-system-overview.md)
 - **Replaces:** —

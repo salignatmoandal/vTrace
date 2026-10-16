@@ -1,6 +1,6 @@
 # vTrace — Roadmap
 
-- **Last reviewed:** 2026-10-16 · **Last updated:** 2026-10-16 · **Change:** restructure; RFCs folded into `docs/specs/`, ADRs migrated to `docs/decisions/` (0001 = runtime strategy). Phases P0–P7 per spec 0009.
+- **Last reviewed:** 2026-10-16 · **Last updated:** 2026-10-16 · **Change:** P0 Accepted — specs and decisions moved to Accepted status. Starting P1 (minimal trace reconstruction).
 
 Incremental phasing. Each phase has a goal, tasks, dependencies,
 acceptance criteria, risks, and a demonstrable deliverable. The

@@ -1,6 +1,6 @@
 # vTrace Specification 0008 — Testing and Benchmarks
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-16
 - **Depends on:** all other specs
 

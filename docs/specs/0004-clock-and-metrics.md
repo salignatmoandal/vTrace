@@ -1,6 +1,6 @@
 # vTrace Specification 0004 — Clock and Metrics
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-16
 - **Related decisions:** [0002 (contract governance)](../decisions/0002-contract-governance.md)
 - **Supersedes (content):** former RFC-0003 (clock) and the former RFC-0002 metric catalog, folded here

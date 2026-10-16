@@ -1,6 +1,6 @@
 # Decision 0002 — Public contract governance
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-16
 - **Related specs:** [spec 0001](../specs/0001-system-overview.md), [spec 0003](../specs/0003-event-schema.md), [spec 0004](../specs/0004-clock-and-metrics.md), [spec 0006](../specs/0006-lifecycle-and-cancellation.md)
 - **Replaces:** —

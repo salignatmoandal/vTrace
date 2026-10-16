@@ -1,6 +1,6 @@
 # vTrace Specification 0006 — Lifecycle and Cancellation
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-16
 - **Related decisions:** [0005 (no inferred causality)](../decisions/0005-no-inferred-causality.md)
 - **Supersedes (content):** former RFC-0004 (lifecycle), folded here

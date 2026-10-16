@@ -1,6 +1,6 @@
 # vTrace Specification 0001 — System Overview
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-16
 - **Related decisions:** [0001 (runtime strategy)](../decisions/0001-language-and-runtime-strategy.md), [0006 (trace document as contract)](../decisions/0006-trace-document-as-contract.md)
 - **Supersedes (content):** former RFC-0001 (architecture), folded here by migration

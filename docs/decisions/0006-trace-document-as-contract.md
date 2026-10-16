@@ -1,6 +1,6 @@
 # Decision 0006 — The trace document is the contract
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-16
 - **Related specs:** [spec 0001](../specs/0001-system-overview.md), [spec 0003](../specs/0003-event-schema.md)
 - **Replaces:** —

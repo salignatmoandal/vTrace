@@ -68,9 +68,8 @@ not from hand editing.
 
 ## Current phase
 
-P0 — Architecture and contracts. See
-[`docs/roadmap.md`](docs/roadmap.md). No production code should be
-written before P0 is accepted.
+P1 — Minimal trace reconstruction. P0 (Architecture and contracts)
+is **Accepted**. See [`docs/roadmap.md`](docs/roadmap.md).
 
 ## Available skills
 

@@ -1,6 +1,6 @@
 # vTrace Specification 0002 — Audio Streaming Model
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-16
 - **Related decisions:** [0004 (privacy default)](../decisions/0004-privacy-default.md)
 - **Depends on:** [0001 (overview)](0001-system-overview.md)

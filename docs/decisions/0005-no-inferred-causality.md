@@ -1,6 +1,6 @@
 # Decision 0005 — No inferred causality by proximity
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-16
 - **Related specs:** [spec 0003](../specs/0003-event-schema.md), [spec 0006](../specs/0006-lifecycle-and-cancellation.md), [spec 0007](../specs/0007-causal-graph.md)
 - **Replaces:** —

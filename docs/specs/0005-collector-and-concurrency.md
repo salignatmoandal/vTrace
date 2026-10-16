@@ -1,6 +1,6 @@
 # vTrace Specification 0005 — Collector and Concurrency
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-16
 - **Related decisions:** [0006 (trace document as contract)](../decisions/0006-trace-document-as-contract.md)
 - **Supersedes (content):** former RFC-0002 buffer policy, folded here
