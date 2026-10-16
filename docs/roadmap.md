@@ -1,6 +1,6 @@
 # vTrace — Roadmap
 
-- **Last reviewed:** 2026-10-16 · **Last updated:** 2026-10-16 · **Change:** P4 causal analysis landed (explicit-edge DAG + per-objective paths). Next: P5 benchmarks or P6 s2s.
+- **Last reviewed:** 2026-10-16 · **Last updated:** 2026-10-16 · **Change:** Academic phase notes P1–P6 added under `docs/phases/` (arXiv-anchored). Next: P5 or P6 implementation.
 
 Incremental phasing. Each phase has a goal, tasks, dependencies,
 acceptance criteria, risks, and a demonstrable deliverable. The

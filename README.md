@@ -8,10 +8,9 @@ voice runtimes.
 
 ## Status
 
-The project is in the **architecture and discovery phase**. No
-production code is written yet. This phase fixes the contracts (event
-model, clock semantics, lifecycle states, export format) before any
-implementation.
+P0 contracts are **Accepted**. Implementation has reached **P4**
+(causal analysis). See [`docs/roadmap.md`](docs/roadmap.md) and
+[`docs/phases/`](docs/phases/) for the academic phase notes (P1–P6).
 
 ## Documentation
 
@@ -20,6 +19,8 @@ implementation.
 - [`docs/decisions/`](docs/decisions/) — Decision records: accepted
   architectural decisions.
 - [`docs/roadmap.md`](docs/roadmap.md) — Roadmap P0 through P7.
+- [`docs/phases/`](docs/phases/) — Academic notes for phases P1–P6
+  (problem, definition, literature, deliverable).
 - [`docs/schema/trace.schema.json`](docs/schema/trace.schema.json) —
   Machine-readable trace document contract.
 - [`AGENTS.md`](AGENTS.md) — Permanent invariants for agents.
