@@ -11,6 +11,7 @@ clashing with the `vtrace.validate` Python module (schema validation).
 
 from vtrace._vtrace import ManualClock, MonotonicClock
 from vtrace.adapters import trace_llm, trace_playback, trace_stt, trace_tts
+from vtrace.causal import critical_paths
 from vtrace.collector import Collector
 from vtrace.lifecycle import Anomaly, LifecycleReport, analyze_lifecycle
 
@@ -23,6 +24,7 @@ __all__ = [
     "ManualClock",
     "MonotonicClock",
     "analyze_lifecycle",
+    "critical_paths",
     "trace_llm",
     "trace_playback",
     "trace_stt",

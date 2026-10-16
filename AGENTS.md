@@ -68,9 +68,8 @@ not from hand editing.
 
 ## Current phase
 
-P3 complete (lifecycle analysis). Next: P4 — Causal analysis.
-P0 is **Accepted**; P1 MVP and P2 multi-producer are done.
-See [`docs/roadmap.md`](docs/roadmap.md).
+P4 complete (causal analysis). Next: P5 benchmarking or P6 HF integration.
+P0 is **Accepted**; P1–P3 are done. See [`docs/roadmap.md`](docs/roadmap.md).
 
 ## Available skills
 

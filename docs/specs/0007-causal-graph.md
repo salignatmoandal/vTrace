@@ -126,8 +126,8 @@ references with cumulative durations within one clock domain.
 
 ## 12. Open questions
 
-- Should `vtrace-analysis` be a separate crate or a `vtrace-core`
-  module? Decidable at P4.
-- Should the graph be exported as part of the document or computed
-  on demand? Suggested: computed on demand; the document is the
-  contract.
+- ~~Should `vtrace-analysis` be a separate crate or a `vtrace-core`
+  module?~~ **Resolved at P4:** separate L1 crate `vtrace-analysis`.
+- ~~Should the graph be exported as part of the document or computed
+  on demand?~~ **Resolved at P4:** computed on demand; the document
+  remains the contract (decision 0006).

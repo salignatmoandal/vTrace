@@ -21,6 +21,7 @@
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 
+use vtrace_analysis::critical_paths as analysis_critical_paths;
 use vtrace_core::{parse_and_validate, Clock};
 use vtrace_core::{ManualClock as CoreManualClock, MonotonicClock as CoreMonotonicClock};
 
@@ -124,11 +125,30 @@ fn parse(json: &str) -> PyResult<PyObject> {
     })
 }
 
+/// Compute per-objective critical paths (spec 0007).
+///
+/// Returns a list of path result dicts. Raises `ValueError` on a cycle
+/// or cross-domain path. Missing edges yield `partial` / `unavailable`
+/// — never a fabricated path (decision 0005).
+#[pyfunction]
+fn critical_paths(json: &str) -> PyResult<PyObject> {
+    let doc = parse_and_validate(json).map_err(|e| PyValueError::new_err(e.to_string()))?;
+    let paths = analysis_critical_paths(&doc).map_err(|e| PyValueError::new_err(e.to_string()))?;
+    let serialized =
+        serde_json::to_string(&paths).map_err(|e| PyValueError::new_err(e.to_string()))?;
+    Python::with_gil(|py| {
+        let json_mod = py.import_bound("json")?;
+        let result = json_mod.call_method1("loads", (serialized,))?;
+        Ok(result.unbind())
+    })
+}
+
 /// The vTrace native extension module.
 #[pymodule]
 fn _vtrace(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(validate, m)?)?;
     m.add_function(wrap_pyfunction!(parse, m)?)?;
+    m.add_function(wrap_pyfunction!(critical_paths, m)?)?;
     m.add_class::<PyMonotonicClock>()?;
     m.add_class::<PyManualClock>()?;
     Ok(())

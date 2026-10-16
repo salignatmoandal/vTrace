@@ -1,6 +1,6 @@
 # vTrace — Roadmap
 
-- **Last reviewed:** 2026-10-16 · **Last updated:** 2026-10-16 · **Change:** P3 lifecycle analysis landed (anomalies off hot path). Next: P4 causal analysis.
+- **Last reviewed:** 2026-10-16 · **Last updated:** 2026-10-16 · **Change:** P4 causal analysis landed (explicit-edge DAG + per-objective paths). Next: P5 benchmarks or P6 s2s.
 
 Incremental phasing. Each phase has a goal, tasks, dependencies,
 acceptance criteria, risks, and a demonstrable deliverable. The

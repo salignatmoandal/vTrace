@@ -20,6 +20,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from vtrace.causal import critical_paths, format_critical_paths
 from vtrace.lifecycle import analyze_lifecycle, format_lifecycle
 
 _MS = 1_000_000  # ns per ms
@@ -203,5 +204,10 @@ def generate_report(doc: dict[str, Any]) -> str:
     lines.append(
         f"  cancel_latency_ms     {_metric(by_name, 'cancel.requested', cancel_end, 'cancel')}"
     )
+    lines.append("")
+
+    # Critical paths (P4, spec 0007) — explicit edges only (decision 0005).
+    paths = critical_paths(doc)
+    lines.append(format_critical_paths(paths))
 
     return "\n".join(lines)
