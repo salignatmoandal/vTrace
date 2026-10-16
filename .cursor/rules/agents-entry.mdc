@@ -1,0 +1,22 @@
+---
+description: Always-on session initialization for vTrace agents.
+globs: ["*"]
+alwaysApply: true
+---
+
+# Session initialization
+
+1. Read `AGENTS.md` first. It is the single source of engineering
+   invariants.
+2. Read `plan/STATUS.md` if it exists (current phase, next task,
+   blocked items). `plan/` is gitignored and local-only.
+3. Read `docs/roadmap.md` for phase, status, and the revision-history
+   header before picking work.
+4. Before changing a public contract (event, metric, clock, state,
+   export), read the relevant spec in `docs/specs/` and decision in
+   `docs/decisions/`, and follow the `architecture-design` skill.
+5. Do not write production code before P0 is `Accepted`. Crate
+   skeletons that compile but contain no production logic are allowed
+   as harness.
+6. A task is done only when `just ci` is green and evidence is attached
+   (AGENTS.md: evidence-based completion). Never invent measurements.

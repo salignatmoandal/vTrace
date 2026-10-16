@@ -1,0 +1,27 @@
+---
+description: Contract rules for the vTrace Python package.
+globs: ["vtrace/**/*.py", "tests/**/*.py"]
+alwaysApply: true
+---
+
+# Python contract rules
+
+- No broad `except:`. Catch concrete errors; let programming errors
+  surface.
+- No `time.time_ns()` for durations. Use the `Clock` abstraction
+  (`now_ns()` + `domain()`), per spec 0004. Wall clock is not
+  monotonic.
+- No metric without an explicit event pair (spec 0003). If an
+  endpoint is missing, return `unavailable` with the reason; never
+  substitute.
+- No causal edge inferred from timestamp proximity (decision 0005).
+  Only `parent_id` and explicit pairs (`queued`/`started`,
+  cancellation) count as edges.
+- No voice content in `attributes` (decision 0004): no audio,
+  transcription, prompt, or model response by default.
+- Every emitted trace must validate against
+  `docs/schema/trace.schema.json` in a test.
+- `record()` must not block, allocate heavily, or encode JSON on the
+  caller's path (spec 0005).
+- Distinguish observed results from expected results. Never claim a
+  test or benchmark passed unless it was actually executed.

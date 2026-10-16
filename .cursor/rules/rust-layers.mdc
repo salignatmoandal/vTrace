@@ -1,0 +1,26 @@
+---
+description: Layering and no-panic rules for the vTrace Rust workspace.
+globs: ["crates/**", "xtask/**", "Cargo.toml", ".cargo/**"]
+alwaysApply: true
+---
+
+# Rust workspace rules
+
+- Respect the layer table in `docs/specs/0001-system-overview.md`:
+  `vtrace-core` (L0) depends on no workspace crate; `vtrace-analysis`
+  (L1) may depend on `vtrace-core`; `vtrace-python` (L2) may depend on
+  `vtrace-core` and `vtrace-analysis`. Nothing below L2 depends on
+  PyO3 or Python. `cargo xtask layers` enforces this.
+- No `unwrap()`, `expect()`, `panic!`, `unreachable!`, `todo!`,
+  `unimplemented!` in non-test code. Each production crate root carries
+  `#![deny(clippy::unwrap_used, clippy::expect_used, clippy::panic,
+  clippy::unimplemented, clippy::todo, clippy::unreachable)]`.
+- `unsafe` is `forbid` workspace-wide. If an FFI module ever needs it,
+  confine it to one module with a `// SAFETY:` comment on every block
+  and a safe `Result` API (mirrors the SoundCraft clap-host exception).
+- Timestamps cross the FFI as `i64` ns + `clock_domain` string, never
+  a raw `std::time::Instant` (spec 0001, spec 0004).
+- `record()` must not block or panic; it timestamps before the queue
+  and uses `try_push` into a bounded buffer (spec 0005).
+- Run `cargo xtask ci` before declaring done. No performance claim
+  without a benchmark run in P5.
