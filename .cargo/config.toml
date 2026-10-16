@@ -1,0 +1,7 @@
+[alias]
+xtask = "run --package xtask --"
+
+# Per-worktree build isolation: parallel agents set CARGO_TARGET_DIR to
+# their own worktree's target dir so they never contend on one lockfile.
+# Example for a worktree at ../vtrace-a:
+#   CARGO_TARGET_DIR=../vtrace-a/target cargo xtask ci

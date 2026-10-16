@@ -1,0 +1,40 @@
+[workspace]
+resolver = "2"
+members = ["crates/*", "xtask"]
+default-members = ["crates/*", "xtask"]
+
+[workspace.package]
+version = "0.0.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+rust-version = "1.75"
+repository = "https://github.com/storytold/vtrace"
+
+[workspace.dependencies]
+# Internal crates.
+vtrace-core = { path = "crates/vtrace-core" }
+vtrace-analysis = { path = "crates/vtrace-analysis" }
+vtrace-python = { path = "crates/vtrace-python" }
+
+# Foundation.
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["float_roundtrip"] }
+thiserror = "1"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+dbg_macro = "warn"
+todo = "warn"
+too_many_arguments = "allow"
+type_complexity = "allow"
+
+[profile.dev.package."*"]
+opt-level = 2
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 16
+debug = 0
