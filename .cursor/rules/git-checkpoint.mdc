@@ -1,0 +1,18 @@
+---
+alwaysApply: true
+description: Enforce incremental validated Git checkpoints
+---
+
+
+# Incremental Git Checkpoints
+
+Follow the Git checkpoint policy in AGENTS.md.
+
+During implementation:
+- Commit after every validated milestone.
+- Do not wait until the end of the task.
+- Continue autonomously after successful commits.
+- Preserve user changes and worktree isolation.
+- Never push without authorization.
+
+Git checkpoints do not replace the final `just ci` quality gate.
