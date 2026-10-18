@@ -90,3 +90,47 @@ No agent parallelization before contracts are accepted. Afterwards,
 one worktree per stable interface, plus a review agent that does not
 code the same surface. See
 [`docs/agents/worktrees.md`](docs/agents/worktrees.md).
+
+
+## Incremental Git Checkpoints
+
+Agents must maintain a recoverable Git history during development.
+
+### When to commit
+
+- After each meaningful, independently validated milestone.
+- After adding a deterministic test for a contract change.
+- After a documentation/specification milestone is complete.
+- Before starting the next independent implementation step.
+
+### Commit procedure
+
+1. Inspect `git status` and `git diff`.
+2. Run relevant tests for the changed components.
+3. Stage only files belonging to the current milestone.
+4. Create a Conventional Commit.
+5. Continue autonomously to the next milestone.
+
+### Commit conventions
+
+- `feat(scope): description`
+- `fix(scope): description`
+- `test(scope): description`
+- `docs(scope): description`
+- `refactor(scope): description`
+
+### Safety
+
+- Never commit unrelated or unverified changes.
+- Never bypass failing validation.
+- Never use `git add -A` blindly.
+- Never force-push, merge, or rewrite shared history.
+- Never push without explicit authorization.
+- Use separate worktrees for independent concurrent tasks.
+
+### Completion
+
+- Each milestone requires appropriate local validation.
+- Final task completion still requires `just ci` to pass.
+- Report commit hashes and validation evidence.
+- A Git commit does not imply that a task is complete.
