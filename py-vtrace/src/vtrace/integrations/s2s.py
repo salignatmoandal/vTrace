@@ -143,6 +143,10 @@ class S2STurnBridge:
             parent=self._turn,
         )
 
+    def on_llm_completed(self) -> str | None:
+        """Generation finished; first token alone does not confirm completion."""
+        return self._rec("llm", "llm.completed", self._llm, parent=self._turn)
+
     def on_llm_cancelled(self) -> str | None:
         return self._rec(
             "llm",
@@ -164,6 +168,10 @@ class S2STurnBridge:
             self._tts,
             parent=self._turn,
         )
+
+    def on_tts_completed(self) -> str | None:
+        """Synthesis finished; first audio alone does not confirm completion."""
+        return self._rec("tts", "tts.completed", self._tts, parent=self._turn)
 
     def on_tts_cancelled(self) -> str | None:
         return self._rec(
@@ -292,21 +300,9 @@ def run_s2s_shaped_turn(*, interrupted: bool = True) -> dict[str, Any]:
         else:
             # Streaming overlap: LLM may still be open after TTS started.
             clock.set(_T_LLM_DONE)
-            collector.record(
-                "llm",
-                "llm.completed",
-                _SPAN_LLM,
-                parent_span_id=_SPAN_TURN,
-                producer_id="s2s-demo",
-            )
+            bridge.on_llm_completed()
             clock.set(_T_TTS_DONE)
-            collector.record(
-                "tts",
-                "tts.completed",
-                _SPAN_TTS,
-                parent_span_id=_SPAN_TURN,
-                producer_id="s2s-demo",
-            )
+            bridge.on_tts_completed()
             clock.set(_T_PLAYBACK_STOP_H)
             bridge.on_playback_stopped()
             clock.set(_T_TURN_DONE)

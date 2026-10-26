@@ -1,0 +1,132 @@
+{
+  "schema_version": "1.0",
+  "clock_domains": [
+    "manual:s2s-unconfirmed-cancel"
+  ],
+  "completeness": "complete",
+  "dropped_total": 0,
+  "dropped_critical": 0,
+  "events": [
+    {
+      "schema_version": "1.0",
+      "event_id": "evt_000000",
+      "session_id": "sess_s2s",
+      "turn_id": "turn_s2s_unconfirmed_cancel",
+      "span_id": "span_turn",
+      "component": "turn",
+      "name": "turn.started",
+      "timestamp_ns": 0,
+      "clock_domain": "manual:s2s-unconfirmed-cancel",
+      "sequence": 0,
+      "producer_id": "s2s-test",
+      "response_id": "response_1"
+    },
+    {
+      "schema_version": "1.0",
+      "event_id": "evt_000001",
+      "session_id": "sess_s2s",
+      "turn_id": "turn_s2s_unconfirmed_cancel",
+      "span_id": "span_vad",
+      "component": "vad",
+      "name": "vad.speech_ended",
+      "timestamp_ns": 50000000,
+      "clock_domain": "manual:s2s-unconfirmed-cancel",
+      "sequence": 1,
+      "producer_id": "s2s-test",
+      "response_id": "response_1",
+      "parent_span_id": "span_turn"
+    },
+    {
+      "schema_version": "1.0",
+      "event_id": "evt_000002",
+      "session_id": "sess_s2s",
+      "turn_id": "turn_s2s_unconfirmed_cancel",
+      "span_id": "span_llm",
+      "component": "llm",
+      "name": "llm.started",
+      "timestamp_ns": 60000000,
+      "clock_domain": "manual:s2s-unconfirmed-cancel",
+      "sequence": 2,
+      "producer_id": "s2s-test",
+      "response_id": "response_1",
+      "parent_span_id": "span_turn"
+    },
+    {
+      "schema_version": "1.0",
+      "event_id": "evt_000003",
+      "session_id": "sess_s2s",
+      "turn_id": "turn_s2s_unconfirmed_cancel",
+      "span_id": "span_llm",
+      "component": "llm",
+      "name": "llm.first_token",
+      "timestamp_ns": 100000000,
+      "clock_domain": "manual:s2s-unconfirmed-cancel",
+      "sequence": 3,
+      "producer_id": "s2s-test",
+      "response_id": "response_1",
+      "parent_span_id": "span_turn"
+    },
+    {
+      "schema_version": "1.0",
+      "event_id": "evt_000004",
+      "session_id": "sess_s2s",
+      "turn_id": "turn_s2s_unconfirmed_cancel",
+      "span_id": "span_tts",
+      "component": "tts",
+      "name": "tts.started",
+      "timestamp_ns": 110000000,
+      "clock_domain": "manual:s2s-unconfirmed-cancel",
+      "sequence": 4,
+      "producer_id": "s2s-test",
+      "response_id": "response_1",
+      "parent_span_id": "span_turn"
+    },
+    {
+      "schema_version": "1.0",
+      "event_id": "evt_000005",
+      "session_id": "sess_s2s",
+      "turn_id": "turn_s2s_unconfirmed_cancel",
+      "span_id": "span_tts",
+      "component": "tts",
+      "name": "tts.first_audio",
+      "timestamp_ns": 200000000,
+      "clock_domain": "manual:s2s-unconfirmed-cancel",
+      "sequence": 5,
+      "producer_id": "s2s-test",
+      "response_id": "response_1",
+      "parent_span_id": "span_turn"
+    },
+    {
+      "schema_version": "1.0",
+      "event_id": "evt_000006",
+      "session_id": "sess_s2s",
+      "turn_id": "turn_s2s_unconfirmed_cancel",
+      "span_id": "span_vad",
+      "component": "vad",
+      "name": "vad.speech_started",
+      "timestamp_ns": 250000000,
+      "clock_domain": "manual:s2s-unconfirmed-cancel",
+      "sequence": 6,
+      "producer_id": "s2s-test",
+      "response_id": "response_1",
+      "parent_span_id": "span_turn",
+      "attributes": {
+        "barge_in": true
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "event_id": "evt_000007",
+      "session_id": "sess_s2s",
+      "turn_id": "turn_s2s_unconfirmed_cancel",
+      "span_id": "span_turn",
+      "component": "turn",
+      "name": "cancel.requested",
+      "timestamp_ns": 260000000,
+      "clock_domain": "manual:s2s-unconfirmed-cancel",
+      "sequence": 7,
+      "producer_id": "s2s-test",
+      "response_id": "response_1"
+    }
+  ]
+}
