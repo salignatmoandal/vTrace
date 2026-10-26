@@ -1,6 +1,6 @@
 # vTrace — Roadmap
 
-- **Last reviewed:** 2026-10-16 · **Last updated:** 2026-10-16 · **Change:** P6 adapters-first slice (`vtrace.integrations.s2s`, #714-shaped fixture, integration doc). Next: wire live s2s hooks or P5.
+- **Last reviewed:** 2026-10-26 · **Last updated:** 2026-10-26 · **Change:** P6 completion callbacks and deterministic unconfirmed-cancel evidence; live HF hooks and P5 remain open.
 
 Incremental phasing. Each phase has a goal, tasks, dependencies,
 acceptance criteria, risks, and a demonstrable deliverable. The
@@ -114,7 +114,9 @@ establish correctness and reproducibility.
 
 - **Goal.** Demonstrate value in `huggingface/speech-to-speech`.
 - **Tasks.** Audit existing code, identify instrumentation points,
-  minimal non-invasive upstream PR.
+  minimal non-invasive upstream PR. Completion callbacks and deterministic
+  cancellation failure-path evidence are available; see
+  [P6 cancellation evidence](integrations/cancellation-evidence.md).
 - **Dependencies.** P1, P2, ideally P4.
 - **Acceptance criteria.** No claim about current instrumentation
   before reading the code. Instrumentation toggleable on and off.
@@ -135,3 +137,10 @@ establish correctness and reproducibility.
   Mitigation: decision 0006.
 - **Demonstrable deliverable.** Local dashboard reading a trace
   document.
+
+## Revision history
+
+| Date | Change |
+|---|---|
+| 2026-10-26 | P6 LLM/TTS completion callbacks; unconfirmed-cancel fixture and deterministic failure-path tests. Live interrupted-turn acceptance and P5 remain open. |
+| 2026-10-16 | P6 adapters-first bridge, #714-shaped fixture and integration hook map. |

@@ -28,8 +28,8 @@ content (decision 0004).
 |---|---|---|
 | VAD speech end | `on_speech_ended` | `vad.speech_ended` |
 | STT handler enter / final | `on_stt_started` / `on_stt_completed` | `stt.*` |
-| LLM generate start / first token | `on_llm_started` / `on_llm_first_token` | `llm.*` |
-| TTS first yielded audio (`tts_ttfa`) | `on_tts_first_audio` | `tts.first_audio` |
+| LLM generate start / first token / completion | `on_llm_started` / `on_llm_first_token` / `on_llm_completed` | `llm.*` |
+| TTS first yielded audio (`tts_ttfa`) / synthesis completion | `on_tts_first_audio` / `on_tts_completed` | `tts.first_audio` / `tts.completed` |
 | Playback / output start | `on_playback_started` | `playback.started` |
 | Barge-in / interrupt detected | `on_barge_in` | `vad.speech_started` + `barge_in` |
 | CancelScope request / ack | `on_cancel_requested` / `on_cancel_acknowledged` | `cancel.*` |
@@ -66,3 +66,10 @@ cd py-vtrace && uv run vtrace report ../fixtures/traces/s2s-interrupt-turn.json
 - Live instrumentation requires a toggleable wrapper or a small
   upstream PR — out of scope for this adapters-first slice.
 - No overhead claim until P5.
+
+## Cancellation acceptance evidence
+
+The [unconfirmed-cancel comparison](cancellation-evidence.md) distinguishes
+a cancel request from acknowledgement and effective stage stop, with a
+second deterministic fixture and failure-path tests. It also lists the
+requirements and remaining evidence for live HF wiring.
